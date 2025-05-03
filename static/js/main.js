@@ -62,8 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             body: formData,
             headers: {
-                'Accept': 'application/json'
-            }
+                'Accept': 'application/json',
+                // No need to set Content-Type with FormData, browser sets it automatically with boundary
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
         })
         .then(response => {
             if (!response.ok) {
@@ -88,6 +91,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to display analysis results
     function displayResults(data, originalText) {
         if (!resultsContainer) return;
+        
+        // Check if there was an error in the response
+        if (data.error) {
+            showAlert(data.error, 'danger');
+            return;
+        }
         
         // Clear previous results
         resultsContainer.innerHTML = '';
