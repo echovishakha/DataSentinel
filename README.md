@@ -1,24 +1,22 @@
-# AI Safeguard: Sensitive Data Protection Tool
+# Data Sentinel: AI-Powered Privacy Protection
 
-![AI Safeguard Logo](https://i.imgur.com/jKNKnC3.png)
+Data Sentinel is a comprehensive tool that helps protect your sensitive data from being accidentally shared with AI tools like ChatGPT, Claude, and other large language models. The application analyzes text input before it's sent to AI services, identifies potentially sensitive information, and provides warnings or blocks based on configurable security policies.
 
-AI Safeguard is a comprehensive tool that helps protect your sensitive data from being accidentally shared with AI tools like ChatGPT, Claude, and other large language models. The application analyzes text input before it's sent to AI services, identifies potentially sensitive information, and provides warnings or blocks based on configurable security policies.
+**🔗 [Try Data Sentinel Now](https://data-sentinel-echovishakha.replit.app/)** 
 
-**🔗 [Try AI Safeguard Now](https://aisafeguard.replit.app)** 
+## About Data Sentinel
 
-## 📸 Screenshots
+Data Sentinel is an advanced privacy protection tool designed to safeguard your sensitive information when interacting with AI systems. With the increasing use of AI assistants in everyday work, there's a growing risk of accidentally sharing confidential data. Data Sentinel analyzes your text before you share it with AI tools, helping you identify and remove sensitive information.
 
-### Dashboard View
-![Dashboard Screenshot](https://i.imgur.com/pL6f4Rx.png)
-*The dashboard provides a comprehensive view of text analysis and configuration settings.*
+The application incorporates sophisticated pattern matching algorithms and natural language processing techniques to detect various categories of sensitive data, from API keys and passwords to personal identification details and sensitive personal attributes like gender identity, religion, and ethnicity.
 
-### Analysis Results
-![Analysis Results](https://i.imgur.com/K8vY9Vj.png)
-*Results screen showing detected sensitive information with color-coded risk levels.*
+### Recent Enhancements
 
-### Configuration Management
-![Configuration Management](https://i.imgur.com/bTm4Sdp.png)
-*Users can create and manage multiple detection configurations with custom settings.*
+- **Enhanced Privacy Protection**: Added advanced detection for sensitive personal attributes including gender identity, pronouns, religion, ethnicity, and sexual orientation
+- **Improved User Experience**: Added a convenient "Clear Text" button to reset input fields quickly
+- **Better Pattern Recognition**: Refined regex patterns to reduce false positives between similar data types
+- **Detailed Recommendations**: Added specific guidance when sensitive personal attributes are detected
+- **Risk Assessment**: Properly categorizes sensitive personal information as high-risk to ensure appropriate handling
 
 ## ✨ Key Features
 
@@ -46,8 +44,8 @@ AI Safeguard is a comprehensive tool that helps protect your sensitive data from
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/ai-safeguard.git
-   cd ai-safeguard
+   git clone https://github.com/yourusername/data-sentinel.git
+   cd data-sentinel
    ```
 
 2. Install dependencies:
@@ -84,7 +82,7 @@ AI Safeguard is a comprehensive tool that helps protect your sensitive data from
 
 ## 🔍 Detection Capabilities
 
-AI Safeguard can detect a wide range of sensitive information:
+Data Sentinel can detect a wide range of sensitive information:
 
 | Category | Examples |
 |----------|----------|
@@ -97,7 +95,7 @@ AI Safeguard can detect a wide range of sensitive information:
 
 ## ⚙️ Configuration Options
 
-AI Safeguard offers several ways to customize detection:
+Data Sentinel offers several ways to customize detection:
 
 ### Sensitivity Levels
 - **Low**: Only detect obvious sensitive data with minimal false positives
@@ -119,7 +117,7 @@ Enable or disable specific types of detection:
 
 ## 🔒 Security Considerations
 
-- AI Safeguard employs a defense-in-depth approach to security
+- Data Sentinel employs a defense-in-depth approach to security
 - All detected sensitive information is processed locally in memory
 - Scan history stores only truncated samples of analyzed text
 - All database content is properly sanitized
@@ -167,4 +165,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-*AI Safeguard - Protecting Your Sensitive Information in the Age of AI*
+*Data Sentinel - Protecting Your Sensitive Information in the Age of AI*
