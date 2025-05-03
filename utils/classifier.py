@@ -60,7 +60,13 @@ CONFIDENTIAL_KEYWORDS = {
         "license", "identity", "id number", "credential", "username", "login", "health",
         "medical", "diagnosis", "prescription", "medication", "illness", "condition",
         "patient", "doctor", "hospital", "clinic", "insurance", "family", "spouse",
-        "child", "parent", "relative", "marital", "status", "religion", "political", "sexual"
+        "child", "parent", "relative", "marital", "status"
+    ],
+    
+    "sensitive_personal": [
+        "religion", "political", "sexual", "gender", "pronoun", "race", "ethnicity", 
+        "nationality", "disability", "orientation", "transgender", "lgbtq", "belief",
+        "opinion", "ideology", "affiliation", "union", "minority", "indigenous"
     ],
     
     "corporate": [
@@ -87,6 +93,7 @@ CONFIDENTIAL_KEYWORDS = {
 CONFIDENCE_THRESHOLDS = {
     "financial": 0.15,
     "personal": 0.15,
+    "sensitive_personal": 0.10,  # Lower threshold for sensitive personal info to catch it more easily
     "corporate": 0.15,
     "technical": 0.15
 }
@@ -230,5 +237,13 @@ def analyze_text_structure(text: str) -> Dict[str, float]:
     # Check for personally identifiable format patterns
     if re.search(r'(?i)(?:name|email|phone|address|ssn|dob)[\s]*:[\s]*\w+', text):
         confidence_boosts["personal"] = confidence_boosts.get("personal", 0) + 0.25
+    
+    # Check for sensitive personal information patterns
+    if re.search(r'(?i)(?:gender|pronoun|religion|race|ethnicity|nationality|disability|orientation)[\s]*:[\s]*\w+', text):
+        confidence_boosts["sensitive_personal"] = confidence_boosts.get("sensitive_personal", 0) + 0.30
+    
+    # Check for text mentioning pronouns specifically
+    if re.search(r'(?i)\b(?:he/him|she/her|they/them|zie/zir|xe/xem|pronoun)\b', text):
+        confidence_boosts["sensitive_personal"] = confidence_boosts.get("sensitive_personal", 0) + 0.25
     
     return confidence_boosts

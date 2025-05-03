@@ -25,6 +25,13 @@ REGEX_PATTERNS = {
         "us_ssn": r"(?<!\d)(?<!\()(?<!\+)(?<![\d-])(?<!\(\d{3}\)[\s])(?<![\d]{3}[\s\-])(?<![\d]{3}\))(?<![\d]{3}[\s])([0-9]{3}[\-][0-9]{2}[\-][0-9]{4}|[0-9]{3}[\s][0-9]{2}[\s][0-9]{4}|[0-9]{3}[0-9]{2}[0-9]{4})(?!\d)",
         "dob": r"(?:(?:19|20)[0-9]{2}[\-/\.][0-1][0-9][\-/\.][0-3][0-9])|(?:[0-1][0-9][\-/\.][0-3][0-9][\-/\.](?:19|20)[0-9]{2})"
     },
+    "sensitive_personal_info": {
+        "gender_identity": r"(?i)(?:gender|gender[\s\-_]*identity)[\s\-_]*:?[\s]*([a-zA-Z]+(?:[\s\-_][a-zA-Z]+)*)",
+        "pronouns": r"(?i)(?:\b(?:he/him|she/her|they/them|zie/zir|xe/xem|e/em|fae/faer)\b|(?:pronouns)[\s\-_]*:?[\s]*([a-zA-Z/]+(?:[\s\-_][a-zA-Z/]+)*))",
+        "religion": r"(?i)(?:religion|faith|belief|religious[\s\-_]*affiliation)[\s\-_]*:?[\s]*([a-zA-Z]+(?:[\s\-_][a-zA-Z]+)*)",
+        "ethnicity": r"(?i)(?:ethnicity|race|racial[\s\-_]*identity)[\s\-_]*:?[\s]*([a-zA-Z]+(?:[\s\-_][a-zA-Z]+)*)",
+        "sexual_orientation": r"(?i)(?:sexual[\s\-_]*orientation|sexuality)[\s\-_]*:?[\s]*([a-zA-Z]+(?:[\s\-_][a-zA-Z]+)*)"
+    },
     "financial": {
         "credit_card": r"(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})",
         "bank_account": r"[0-9]{8,17}",
@@ -152,6 +159,7 @@ def detect_sensitive_data(text: str, config) -> Dict[str, Any]:
         "credentials": getattr(config, 'scan_passwords', True),
         "financial": getattr(config, 'scan_credit_cards', True),
         "personal_info": getattr(config, 'scan_personal_info', True),
+        "sensitive_personal_info": getattr(config, 'scan_personal_info', True),  # Use same setting as personal_info
         "company_info": getattr(config, 'scan_company_info', True)
     }
     
@@ -224,7 +232,8 @@ def determine_severity(pattern_name: str, sensitivity_level: int) -> str:
         Severity string (Low, Medium, High)
     """
     # High severity patterns regardless of sensitivity level
-    high_severity_patterns = ["ssh_key", "aws_key", "credit_card", "us_ssn", "stripe_key"]
+    high_severity_patterns = ["ssh_key", "aws_key", "credit_card", "us_ssn", "stripe_key", 
+                            "gender_identity", "pronouns", "religion", "ethnicity", "sexual_orientation"]
     
     # Medium severity patterns
     medium_severity_patterns = ["password", "access_token", "budget_info", 
@@ -299,6 +308,9 @@ def generate_recommendations(detections: List[Dict[str, Any]]) -> List[str]:
     
     if any(k in detection_types for k in ["email", "us phone", "ssn", "dob"]):
         recommendations.append("Personal information detected. Consider anonymizing or removing this data.")
+    
+    if any(k in detection_types for k in ["gender identity", "pronouns", "religion", "ethnicity", "sexual orientation"]):
+        recommendations.append("Sensitive personal attributes detected. This information is considered highly sensitive and should be handled with care.")
     
     if any(k in detection_types for k in ["product names", "client names", "internal systems"]):
         recommendations.append("Company-specific information detected. Consider using generic terms instead.")
