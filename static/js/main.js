@@ -60,11 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Send request to server
         fetch('/analyze', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok: ' + response.status);
             }
             return response.json();
         })

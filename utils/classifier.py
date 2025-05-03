@@ -17,6 +17,10 @@ except LookupError:
     nltk.download('punkt')
     nltk.download('stopwords')
 
+# Force download again to ensure it's available
+nltk.download('punkt', quiet=True)
+nltk.download('stopwords', quiet=True)
+
 # Define confidential content keyword dictionaries
 CONFIDENTIAL_KEYWORDS = {
     "financial": [
@@ -77,11 +81,22 @@ def preprocess_text(text: str) -> List[str]:
     # Convert to lowercase
     text = text.lower()
     
-    # Tokenize
-    tokens = word_tokenize(text)
+    # Custom simple tokenization as a fallback method in case NLTK has issues
+    try:
+        # Try using NLTK tokenizer
+        tokens = word_tokenize(text)
+    except:
+        # Fallback to simple tokenization
+        tokens = re.findall(r'\b\w+\b', text)
     
     # Remove stopwords and non-alphabetic tokens
-    stop_words = set(stopwords.words('english'))
+    try:
+        stop_words = set(stopwords.words('english'))
+    except:
+        # Fallback to a minimal list of common stopwords
+        stop_words = {'a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 
+                     'be', 'been', 'being', 'in', 'on', 'at', 'to', 'for', 'with'}
+    
     tokens = [token for token in tokens if token.isalpha() and token not in stop_words]
     
     return tokens
