@@ -94,27 +94,61 @@ def dashboard():
 # Route for analyzing text
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    # Get text content and configuration from request
-    text = request.form.get('text', '')
-    config_id = request.form.get('config_id', None)
-    
-    if not text:
-        return jsonify({'error': 'No text provided'}), 400
-    
-    # Determine which configuration to use
-    if current_user.is_authenticated and config_id:
-        config = Configuration.query.get(config_id)
-        if not config or (config.user_id != current_user.id and not config.is_default):
+    try:
+        # Check if request is JSON or form data
+        if request.is_json:
+            data = request.json
+            text = data.get('text', '')
+            config_id = data.get('config_id')
+        else:
+            text = request.form.get('text', '')
+            config_id = request.form.get('config_id')
+        
+        logger.debug(f"Analyzing text (length: {len(text)}) with config_id: {config_id}")
+        
+        if not text:
+            return jsonify({'error': 'No text provided'}), 400
+        
+        # Determine which configuration to use
+        if current_user.is_authenticated and config_id:
+            config = Configuration.query.get(config_id)
+            if not config or (config.user_id != current_user.id and not config.is_default):
+                config = Configuration.query.filter_by(is_default=True).first()
+        else:
             config = Configuration.query.filter_by(is_default=True).first()
-    else:
-        config = Configuration.query.filter_by(is_default=True).first()
-    
-    # Analyze the text for sensitive data
-    results = detect_sensitive_data(text, config)
-    
-    # Classify the content using NLP
-    classification = classify_text(text)
-    results['classification'] = classification
+        
+        # Make sure we have a valid config
+        if not config:
+            logger.warning("No valid configuration found, creating default")
+            config = Configuration(
+                name="Default Configuration",
+                is_default=True,
+                scan_api_keys=True,
+                scan_passwords=True,
+                scan_credit_cards=True,
+                scan_personal_info=True,
+                scan_company_info=True,
+                sensitivity_level=2
+            )
+        
+        # Analyze the text for sensitive data
+        results = detect_sensitive_data(text, config)
+        
+        try:
+            # Classify the content using NLP
+            classification = classify_text(text)
+            results['classification'] = classification
+        except Exception as e:
+            logger.error(f"Error in classification: {str(e)}")
+            results['classification'] = {}
+    except Exception as e:
+        logger.error(f"Error in analyze route: {str(e)}")
+        return jsonify({
+            "error": "An error occurred during analysis",
+            "detections": {},
+            "risk_level": "Error",
+            "recommendations": ["The system encountered an error. Please try again."]
+        }), 500
     
     # If user is logged in, save scan history
     if current_user.is_authenticated:
