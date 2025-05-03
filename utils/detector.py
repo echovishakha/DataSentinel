@@ -124,16 +124,24 @@ def detect_sensitive_data(text: str, config) -> Dict[str, Any]:
     Returns:
         Dictionary containing detection results and risk assessment
     """
-    if not text:
+    try:
+        if not text:
+            return {
+                "detections": {},
+                "risk_level": "Low",
+                "recommendations": []
+            }
+        
+        detections = {}
+        all_detections = []
+        recommendations = []
+    except Exception as e:
+        logger.error(f"Error initializing sensitive data detection: {str(e)}")
         return {
             "detections": {},
-            "risk_level": "Low",
-            "recommendations": []
+            "risk_level": "Error",
+            "recommendations": ["An error occurred during analysis. Please try again."]
         }
-    
-    detections = {}
-    all_detections = []
-    recommendations = []
     
     # Determine sensitivity thresholds based on configuration
     sensitivity_level = getattr(config, 'sensitivity_level', 2)  # Default to medium
