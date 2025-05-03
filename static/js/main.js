@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Text analysis functionality
     const analyzeBtn = document.getElementById('analyze-btn');
+    const clearBtn = document.getElementById('clear-btn');
     const textInput = document.getElementById('text-input');
     const resultsContainer = document.getElementById('results-container');
     const sensitiveCounter = document.getElementById('sensitive-counter');
@@ -25,6 +26,18 @@ document.addEventListener('DOMContentLoaded', function() {
         analyzeBtn.addEventListener('click', function() {
             analyzeText();
         });
+        
+        // Add clear button functionality
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                textInput.value = '';
+                resultsContainer.innerHTML = '';
+                sensitiveCounter.innerText = '0';
+                confidenceLevel.innerText = 'Low';
+                confidenceLevel.className = 'badge bg-success';
+                showAlert('Text cleared successfully', 'info');
+            });
+        }
         
         // Also analyze on enter key in text area (with shift+enter for newline)
         textInput.addEventListener('keydown', function(e) {
