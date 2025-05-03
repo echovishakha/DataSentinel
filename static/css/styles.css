@@ -1,0 +1,145 @@
+/* Custom styles for AI Safeguard application */
+
+/* Highlighted sensitive text */
+.sensitive-text {
+    background-color: rgba(var(--bs-danger-rgb), 0.3);
+    border-radius: 0.25rem;
+    padding: 0.1rem 0.25rem;
+    margin: 0 0.1rem;
+}
+
+.sensitive-text-high {
+    background-color: rgba(var(--bs-danger-rgb), 0.4);
+}
+
+.sensitive-text-medium {
+    background-color: rgba(var(--bs-warning-rgb), 0.4);
+}
+
+.sensitive-text-low {
+    background-color: rgba(var(--bs-info-rgb), 0.3);
+}
+
+/* Sensitive info badges */
+.sensitive-badge {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.3rem;
+    margin-left: 0.25rem;
+    vertical-align: middle;
+}
+
+/* Text analysis area */
+.text-analysis-area {
+    min-height: 200px;
+    resize: vertical;
+}
+
+/* Results container */
+.results-container {
+    min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Card customizations */
+.dashboard-card {
+    height: 100%;
+    transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Hero section */
+.hero-section {
+    padding: 4rem 0;
+}
+
+/* Feature icons */
+.feature-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+/* Custom tooltip styling */
+.custom-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--bs-dark);
+    color: var(--bs-light);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.custom-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Configuration form */
+.config-form {
+    background-color: rgba(var(--bs-dark-rgb), 0.05);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+/* Scan history timeline */
+.scan-history-item {
+    border-left: 3px solid var(--bs-primary);
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.scan-history-item::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 0;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--bs-primary);
+}
+
+/* Risk level indicators */
+.risk-low {
+    color: var(--bs-success);
+}
+.risk-medium {
+    color: var(--bs-warning);
+}
+.risk-high {
+    color: var(--bs-danger);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0;
+    }
+    
+    .feature-icon {
+        width: 3rem;
+        height: 3rem;
+    }
+}
