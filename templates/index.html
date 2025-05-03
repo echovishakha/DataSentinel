@@ -122,8 +122,9 @@
                                 <div class="tab-pane fade show active" id="text-input-tab">
                                     <label for="text-input" class="form-label">Enter text to analyze for sensitive data:</label>
                                     <textarea id="text-input" class="form-control text-analysis-area mb-3" placeholder="Type or paste text here to check for sensitive data before sharing with AI tools..."></textarea>
-                                    <div class="d-grid">
-                                        <button id="analyze-btn" class="btn btn-primary">Analyze Text</button>
+                                    <div class="d-grid gap-2 d-md-flex">
+                                        <button id="analyze-btn" class="btn btn-primary flex-grow-1">Analyze Text</button>
+                                        <button id="clear-btn" class="btn btn-outline-secondary">Clear Text</button>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="demo-tab">
@@ -345,6 +346,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Custom JS -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=1.1"></script>
 </body>
 </html>
